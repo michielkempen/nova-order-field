@@ -4,25 +4,28 @@ namespace Michielkempen\NovaOrderField\Http;
 
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\EloquentSortable\Sortable;
 
 class OrderFieldRequestHandler extends Controller
 {
     /**
-     * @param  NovaRequest  $request
+     * @param  NovaRequest $request
      */
     public function __invoke(NovaRequest $request)
     {
-        $field = $request->newResource()
-            ->availableFields($request)
-            ->findFieldByAttribute($request->field, function () {
-                abort(404);
-            });
-
         $resourceId = $request->get('resourceId');
-        $order = $request->get('order');
+        $model = $request->findModelOrFail($resourceId);
 
-        $request->findModelOrFail($resourceId)->update([
-            $field->attribute => $order
-        ]);
+        if (!$model instanceof Sortable) {
+            abort(500);
+        }
+
+        $direction = $request->get('direction');
+
+        if($direction == 'up') {
+            $model->moveOrderUp();
+        } else {
+            $model->moveOrderDown();
+        }
     }
 }
