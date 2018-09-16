@@ -53,7 +53,7 @@ class Page extends Resource
     public function fields(Request $request)
     {
         return [
-			OrderField::make('Order'),
+            OrderField::make('Order'),
         ];
     }
 }
