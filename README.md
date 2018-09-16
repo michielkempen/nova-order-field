@@ -21,35 +21,23 @@ composer require michielkempen/nova-order-field
 
 ### Usage
 
-Follow the [usage instructions](https://github.com/spatie/eloquent-sortable#usage) on the eloquent-sortable repository to make your model sortable.
+1. Follow the [usage instructions](https://github.com/spatie/eloquent-sortable#usage) on the eloquent-sortable repository to make your model sortable.
+2. Add the `MichielKempen\NovaOrderField\Orderable` trait to your Nova Resource.
+3. Add a public static property called `$defaultSortField` to your resource, containing your order column.
+4. Add the `OrderField` to your Nova Resource `fields` method.
 
-Add the `MichielKempen\NovaOrderField\Orderable` trait to your Nova Resource.
+### Example
 
 ```php
 use MichielKempen\NovaOrderField\Orderable;
+use MichielKempen\NovaOrderField\OrderField;
 
 class Page extends Resource
 {
     use Orderable;
-}
-```
-
-Add a public static property called `$defaultSortField` to your resource, containing your order column.
-
-```php
-class Page extends Resource
-{
+    
     public static $defaultOrderField = 'order';
-}
-```
-
-Add the `OrderField` to your Nova Resource `fields` method.
-
-```php
-use \MichielKempen\NovaOrderField\OrderField;
-
-class Page extends Resource
-{
+    
     public function fields(Request $request)
     {
         return [
