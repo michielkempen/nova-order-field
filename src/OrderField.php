@@ -37,10 +37,8 @@ class OrderField extends Field
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $orderField = $resource->sortable['order_column_name'];
-
-        $first = $resource->newQuery()->orderBy($orderField, 'asc')->first();
-        $last = $resource->newQuery()->orderBy($orderField, 'desc')->first();
+        $first = $resource->buildSortQuery()->ordered()->first();
+        $last = $resource->buildSortQuery()->ordered('desc')->first();
 
         $this->withMeta([
             'first' => is_null($first) ? null : $first->id,
