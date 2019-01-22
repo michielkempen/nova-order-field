@@ -17,7 +17,7 @@ class OrderFieldRequestHandler extends Controller
         $model = $request->findModelOrFail($resourceId);
 
         if (!$model instanceof Sortable) {
-            abort(500);
+            abort(500, "Model should implement " . Sortable::class . " interface");
         }
 
         $direction = $request->get('direction');
