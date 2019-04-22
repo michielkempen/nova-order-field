@@ -1,6 +1,6 @@
 <?php
 
-namespace Michielkempen\NovaOrderField\Http;
+namespace MichielKempen\NovaOrderField\Http;
 
 use Illuminate\Routing\Controller;
 use Laravel\Nova\Http\Requests\NovaRequest;

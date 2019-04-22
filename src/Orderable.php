@@ -1,6 +1,6 @@
 <?php
 
-namespace Michielkempen\NovaOrderField;
+namespace MichielKempen\NovaOrderField;
 
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Http\Requests\NovaRequest;

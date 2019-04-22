@@ -1,6 +1,6 @@
 <?php
 
-namespace Michielkempen\NovaOrderField;
+namespace MichielKempen\NovaOrderField;
 
 use Laravel\Nova\Fields\Field;
 
