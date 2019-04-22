@@ -40,7 +40,7 @@ export default {
 
 		reorderResource(direction) {
 			Nova.request().post(
-				'/nova-vendor/michielkempen/nova-order-field', {
+				`/nova-vendor/michielkempen/nova-order-field/${this.resourceName}`, {
 					direction: direction,
 					field: this.field.attribute,
 					resource: this.resourceName,
