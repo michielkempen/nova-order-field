@@ -26,6 +26,20 @@ composer require michielkempen/nova-order-field
 3. Add a public static property called `$defaultOrderField` to your resource, containing your order column.
 4. Add the `OrderField` to your Nova Resource `fields` method.
 
+### Grouping
+
+If your model/table has a grouping field (usually a foreign key): `id, `**`user_id`**`, title, order_column`
+and you'd like the above methods to take it into considerations, you can create a `buildSortQuery` method at your model:
+
+```php
+public function buildSortQuery()
+{
+    return static::query()->where('user_id', $this->user_id);
+}
+```
+
+This will restrict the calculations to fields value of the model instance.
+
 ### Example
 
 ```php
