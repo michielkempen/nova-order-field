@@ -1,3 +1,4 @@
 let mix = require('laravel-mix')
 
-mix.js('resources/js/field.js', 'dist/js')
+mix.setPublicPath('dist')
+    .js('resources/js/field.js', 'js')
