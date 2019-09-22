@@ -269,33 +269,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['resourceName', 'field'],
-    computed: {
-        resourceId: function resourceId() {
-            return this.$parent.resource.id.value;
-        },
-        parentList: function parentList() {
-            return this.$root.$children[this.$root.$children.length - 1];
-        }
+  props: ["resourceName", "field"],
+  computed: {
+    resourceId: function resourceId() {
+      return this.$parent.resource.id.value;
     },
-    methods: {
-        reorderResource: function reorderResource(direction) {
-            var _this = this;
-
-            Nova.request().post('/nova-vendor/michielkempen/nova-order-field/' + this.resourceName, {
-                direction: direction,
-                field: this.field.attribute,
-                resource: this.resourceName,
-                resourceId: this.resourceId
-            }).then(function () {
-                _this.$toasted.show(_this.__('The new order has been set!'), { type: 'success' });
-
-                _this.parentList.getResources();
-            });
-        }
+    parentList: function parentList() {
+      return this.$parent.$parent.$parent.$parent.$parent.$parent;
     }
+  },
+  methods: {
+    reorderResource: function reorderResource(direction) {
+      var _this = this;
+
+      Nova.request().post("/nova-vendor/michielkempen/nova-order-field/" + this.resourceName, {
+        direction: direction,
+        field: this.field.attribute,
+        resource: this.resourceName,
+        resourceId: this.resourceId
+      }).then(function () {
+        _this.$toasted.show(_this.__("The new order has been set!"), {
+          type: "success"
+        });
+
+        _this.parentList.getResources();
+      });
+    }
+  }
 });
 
 /***/ }),
