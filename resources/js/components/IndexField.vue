@@ -52,7 +52,7 @@ export default {
 					{type: 'success'}
 				);
 
-				this.$router.go(this.$router.currentRoute);
+                this.$parent.$parent.$parent.$parent.$parent.$parent.getResources();
             });
         }
 
