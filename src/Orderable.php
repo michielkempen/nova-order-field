@@ -80,9 +80,9 @@ trait Orderable
 
         $resource = $request->viaResource();
 
-        $relation = $resource::newModel()->{$request->viaRelationship}();
+        $relationship = $resource::newModel()->{$request->viaRelationship}();
 
-        if(!$relation || !$relation->getPivotClass()) {
+        if(!$relationship || !$relationship->getPivotClass()) {
             return;
         }
 
