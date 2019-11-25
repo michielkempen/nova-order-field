@@ -16,18 +16,6 @@ trait Orderable
     public static $defaultOrderField;
 
     /**
-     * Find the orderByField for current request
-     *
-     * @param  NovaRequest  $request
-     * @return string
-     */
-    public static function orderByFieldAttribute(NovaRequest $request)
-    {
-        return static::$defaultOrderField
-            ?? static::modelOrderByFieldAttribute(static::newModel());
-    }
-    
-    /**
      * Build an "index" query for the given resource.
      *
      * @param  NovaRequest  $request
@@ -38,7 +26,7 @@ trait Orderable
     {
         $query->getQuery()->orders = [];
 
-        if($pivot = static::orderedManyPivotModel($request)) {
+        if(static::canQueryPivotOrder() && $pivot = static::orderedManyPivotModel($request)) {
             return static::orderedPivotIndexQuery($request, $query, $pivot);
         }
 
@@ -46,53 +34,27 @@ trait Orderable
     }
 
     /**
-     * Build an "index" query for the given related resource.
+     * Find the orderByField for current request
      *
      * @param  NovaRequest  $request
-     * @param  Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Model  $pivot
-     * @return Builder
+     * @return string
      */
-    public static function orderedPivotIndexQuery(NovaRequest $request, $query, $pivot)
+    public static function canQueryPivotOrder()
     {
-        $attribute = static::modelOrderByFieldAttribute($pivot);
-
-        if(!$attribute) {
-            return $query;
-        }
-
-        $query->orderBy($pivot->qualifyColumn($attribute));
-
-        return $query;
+        return method_exists(static::class, 'orderedManyPivotModel')
+            && method_exists(static::class, 'orderedPivotIndexQuery');
     }
 
     /**
-     * Get the requested resource relationship
+     * Find the orderByField for current request
      *
      * @param  NovaRequest  $request
-     * @return null|\Illuminate\Database\Eloquent\Model
+     * @return string
      */
-    protected static function orderedManyPivotModel(NovaRequest $request)
+    public static function orderByFieldAttribute(NovaRequest $request)
     {
-        if(!$request->viaRelationship()) {
-            return;
-        }
-
-        $resource = $request->viaResource();
-
-        $relationship = $resource::newModel()->{$request->viaRelationship}();
-
-        if(!$relationship || !$relationship->getPivotClass()) {
-            return;
-        }
-
-        $pivot = $relationship->getPivotClass();
-
-        if(!($model = new $pivot) instanceof Sortable) {
-            return;
-        }
-
-        return $model;
+        return static::$defaultOrderField
+            ?? static::modelOrderByFieldAttribute(static::newModel());
     }
 
     /**
