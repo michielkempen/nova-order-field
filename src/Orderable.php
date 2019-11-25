@@ -38,8 +38,8 @@ trait Orderable
     {
         $query->getQuery()->orders = [];
 
-        if($relationship = static::orderedManyRelationship($request)) {
-            return static::orderedPivotIndexQuery($request, $query, $relationship);
+        if($pivot = static::orderedManyPivotModel($request)) {
+            return static::orderedPivotIndexQuery($request, $query, $pivot);
         }
 
         return $query->orderBy(static::orderByFieldAttribute($request));
@@ -50,15 +50,11 @@ trait Orderable
      *
      * @param  NovaRequest  $request
      * @param  Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Relations\Relation  $relationship
+     * @param  \Illuminate\Database\Eloquent\Model  $pivot
      * @return Builder
      */
-    public static function orderedPivotIndexQuery(NovaRequest $request, $query, $relationship)
+    public static function orderedPivotIndexQuery(NovaRequest $request, $query, $pivot)
     {
-        $pivot = $relationship->getPivotClass();
-
-        $pivot = new $pivot;
-
         $attribute = static::modelOrderByFieldAttribute($pivot);
 
         if(!$attribute) {
@@ -74,9 +70,9 @@ trait Orderable
      * Get the requested resource relationship
      *
      * @param  NovaRequest  $request
-     * @return null|\Illuminate\Database\Eloquent\Relations\Relation
+     * @return null|\Illuminate\Database\Eloquent\Model
      */
-    protected static function orderedManyRelationship(NovaRequest $request)
+    protected static function orderedManyPivotModel(NovaRequest $request)
     {
         if(!$request->viaRelationship()) {
             return;
@@ -90,7 +86,13 @@ trait Orderable
             return;
         }
 
-        return $relation;
+        $pivot = $relationship->getPivotClass();
+
+        if(!($model = new $pivot) instanceof Sortable) {
+            return;
+        }
+
+        return $model;
     }
 
     /**
