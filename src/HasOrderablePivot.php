@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Spatie\EloquentSortable\Sortable;
 
-trait OrderablePivot
+trait HasOrderablePivot
 {
     /**
      * Build an "index" query for the given related resource.
@@ -20,13 +20,10 @@ trait OrderablePivot
     {
         $attribute = static::modelOrderByFieldAttribute($pivot);
 
-        if(!$attribute) {
-            return $query;
-        }
-
-        $query->orderBy($pivot->qualifyColumn($attribute));
-
-        return $query;
+        return static::orderedIndexQuery(
+            $query,
+            $attribute ? $pivot->qualifyColumn($attribute) : null
+        );
     }
 
     /**

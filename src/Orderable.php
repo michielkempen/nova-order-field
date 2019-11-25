@@ -24,13 +24,47 @@ trait Orderable
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $query->getQuery()->orders = [];
-
         if(static::canQueryPivotOrder() && $pivot = static::orderedManyPivotModel($request)) {
             return static::orderedPivotIndexQuery($request, $query, $pivot);
         }
 
-        return $query->orderBy(static::orderByFieldAttribute($request));
+        if(!static::canQueryOrder()) {
+            return $query;
+        }
+
+        return static::orderedIndexQuery(
+            $query,
+            static::orderByFieldAttribute($request)
+        );
+    }
+
+    /**
+     * Apply an orderBy ASC statement on the query for given attribute
+     *
+     * @param  Builder  $query
+     * @param  string  $attribute
+     * @return Builder
+     */
+    public static function orderedIndexQuery($query, $attribute)
+    {
+        if(!$attribute) {
+            abort(500, static::$model . ' should implement the ' . Sortable::class . ' interface and define a valid order_column_name.');
+        }
+
+        $query->getQuery()->orders = [];
+
+        return $query->orderBy($attribute);
+    }
+
+    /**
+     * Find the orderByField for current request
+     *
+     * @param  NovaRequest  $request
+     * @return string
+     */
+    public static function canQueryOrder()
+    {
+        return !is_null(static::modelOrderByFieldAttribute(static::newModel()));
     }
 
     /**
@@ -66,7 +100,7 @@ trait Orderable
     protected static function modelOrderByFieldAttribute($model)
     {
         if (!$model instanceof Sortable) {
-            abort(500, get_class($model) . ' should implement the ' . Sortable::class . ' interface.');
+            return;
         }
 
         return $model->sortable['order_column_name'] ?? null;
