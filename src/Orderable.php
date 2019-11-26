@@ -97,7 +97,7 @@ trait Orderable
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return null|string
      */
-    protected static function modelOrderByFieldAttribute($model)
+    public static function modelOrderByFieldAttribute($model)
     {
         if (!$model instanceof Sortable) {
             return;

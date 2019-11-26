@@ -32,7 +32,7 @@ trait HasOrderablePivot
      * @param  NovaRequest  $request
      * @return null|\Illuminate\Database\Eloquent\Model
      */
-    protected static function orderedManyPivotModel(NovaRequest $request)
+    public static function orderedManyPivotModel(NovaRequest $request)
     {
         if(!$request->viaRelationship()) {
             return;
