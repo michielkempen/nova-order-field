@@ -48,8 +48,18 @@ class OrderField extends Field
         );
 
         if($pivot = $this->shouldResolveOnPivot($request, $resourceClass)) {
-            return data_get($pivot, $resourceClass::modelOrderByFieldAttribute($pivot));
+            $attribute = $resourceClass::modelOrderByFieldAttribute($pivot);
+
+            $this->withMeta([
+                'viaResource' => $request->viaResource,
+                'viaResourceId' => $request->viaResourceId,
+                'viaRelationship' => $request->viaRelationship,
+            ]);
+
+            return data_get($pivot, $attribute);
         }
+
+        $attribute = $resourceClass::modelOrderByFieldAttribute($resource);
 
         return data_get($resource, $attribute);
     }

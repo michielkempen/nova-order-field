@@ -63,9 +63,11 @@ export default {
           `/nova-vendor/michielkempen/nova-order-field/${this.resourceName}`,
           {
             direction: direction,
-            field: this.field.attribute,
             resource: this.resourceName,
-            resourceId: this.resourceId
+            resourceId: this.resourceId,
+            viaResource: this.field.viaResource || null,
+            viaResourceId: this.field.viaResourceId || null,
+            viaRelationship: this.field.viaRelationship || null
           }
         )
         .then(() => {

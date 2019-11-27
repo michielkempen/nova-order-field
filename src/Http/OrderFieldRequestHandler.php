@@ -3,29 +3,56 @@
 namespace MichielKempen\NovaOrderField\Http;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Spatie\EloquentSortable\Sortable;
 
 class OrderFieldRequestHandler extends Controller
 {
     /**
+     * Handles incoming "change order" request
+     *
      * @param  NovaRequest $request
+     * @return void
      */
     public function __invoke(NovaRequest $request)
     {
-        $resourceId = $request->get('resourceId');
-        $model = $request->findModelOrFail($resourceId);
+        $resource = $request->resource();
 
-        if (!$model instanceof Sortable) {
-            abort(500, "Model should implement " . Sortable::class . " interface");
+        if($resource::canQueryPivotOrder() && $resource::orderedManyPivotModel($request)) {
+            $relationship = $request->viaRelationship;
+            
+            $pivot = $request->findParentModelOrFail()
+                ->$relationship()
+                ->find($request->resourceId)
+                ->pivot;
+
+            return $this->move($request->get('direction'), $pivot);
         }
 
-        $direction = $request->get('direction');
+        $this->move(
+            $request->get('direction'),
+            $request->findModelOrFail()
+        );
+    }
+
+    /**
+     * Handles incoming "change order" request
+     *
+     * @param  string $direction
+     * @param  Model $model
+     * @return void
+     */
+    public function move($direction, Model $model)
+    {
+        if (!$model instanceof Sortable) {
+            abort(500, get_class($model) . ' should implement the ' . Sortable::class . ' interface.');
+        }
 
         if($direction == 'up') {
-            $model->moveOrderUp();
-        } else {
-            $model->moveOrderDown();
-        }
-    }
+            return $model->moveOrderUp();
+        } 
+
+        $model->moveOrderDown();
+    }    
 }
