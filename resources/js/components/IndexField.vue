@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <button
-      v-if="field.last != resourceId"
+      v-if="!field.last"
       @click="reorderResource('down')"
       class="cursor-pointer text-70 hover:text-primary mr-3"
     >
@@ -22,7 +22,7 @@
       </svg>
     </button>
     <button
-      v-if="field.first != resourceId"
+      v-if="!field.first"
       @click="reorderResource('up')"
       class="cursor-pointer text-70 hover:text-primary"
     >

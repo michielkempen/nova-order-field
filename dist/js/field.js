@@ -327,7 +327,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "flex items-center" }, [
-    _vm.field.last != _vm.resourceId
+    !_vm.field.last
       ? _c(
           "button",
           {
@@ -366,7 +366,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.field.first != _vm.resourceId
+    !_vm.field.first
       ? _c(
           "button",
           {

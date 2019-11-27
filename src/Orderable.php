@@ -16,6 +16,13 @@ trait Orderable
     public static $defaultOrderField;
 
     /**
+     * The first & last resourceId of the excecuted indexQuery
+     *
+     * @var null|array
+     */
+    public static $orderedExtrema;
+
+    /**
      * Build an "index" query for the given resource.
      *
      * @param  NovaRequest  $request
@@ -51,9 +58,27 @@ trait Orderable
             abort(500, static::$model . ' should implement the ' . Sortable::class . ' interface and define a valid order_column_name.');
         }
 
+        static::$orderedExtrema = [
+            static::applyQueryOrder($query, $attribute)->first(),
+            static::applyQueryOrder($query, $attribute, 'desc')->first(),
+        ];
+
+        return static::applyQueryOrder($query, $attribute);
+    }
+
+    /**
+     * Clear any previously set order & apply given orderBy statement
+     *
+     * @param  Builder  $query
+     * @param  string  $attribute
+     * @param  string  $direction
+     * @return Builder
+     */
+    public static function applyQueryOrder($query, $attribute, $direction = 'asc')
+    {
         $query->getQuery()->orders = [];
 
-        return $query->orderBy($attribute);
+        return $query->orderBy($attribute, $direction);
     }
 
     /**

@@ -20,6 +20,8 @@ trait HasOrderablePivot
     {
         $attribute = static::modelOrderByFieldAttribute($pivot);
 
+        $query->select(static::newModel()->getTable() . '.*');
+
         return static::orderedIndexQuery(
             $query,
             $attribute ? $pivot->qualifyColumn($attribute) : null
