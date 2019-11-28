@@ -304,9 +304,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       Nova.request().post("/nova-vendor/michielkempen/nova-order-field/" + this.resourceName, {
         direction: direction,
-        field: this.field.attribute,
         resource: this.resourceName,
-        resourceId: this.resourceId
+        resourceId: this.resourceId,
+        viaResource: this.field.viaResource,
+        viaResourceId: this.field.viaResourceId,
+        viaRelationship: this.field.viaRelationship
       }).then(function () {
         _this.$toasted.show(_this.__("The new order has been set!"), {
           type: "success"
@@ -327,7 +329,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "flex items-center" }, [
-    _vm.field.last != _vm.resourceId
+    !_vm.field.last
       ? _c(
           "button",
           {
@@ -366,7 +368,7 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm.field.first != _vm.resourceId
+    !_vm.field.first
       ? _c(
           "button",
           {
