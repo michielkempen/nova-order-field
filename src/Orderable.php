@@ -9,13 +9,6 @@ use Spatie\EloquentSortable\Sortable;
 trait Orderable
 {
     /**
-     * The user-defined OrderFieldAttribute
-     *
-     * @var string
-     */
-    public static $defaultOrderField;
-
-    /**
      * The first & last resourceId of the excecuted indexQuery
      *
      * @var null|array
