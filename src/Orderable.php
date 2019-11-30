@@ -70,6 +70,7 @@ trait Orderable
     public static function applyQueryOrder($query, $attribute, $direction = 'asc')
     {
         $query->getQuery()->orders = [];
+        $query->getQuery()->limit = null;
 
         return $query->orderBy($attribute, $direction);
     }
