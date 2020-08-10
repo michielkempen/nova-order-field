@@ -122,6 +122,6 @@ trait Orderable
             return;
         }
 
-        return $model->sortable['order_column_name'] ?? null;
+        return $model->sortable['order_column_name'] ?? 'order_column';
     }
 }
