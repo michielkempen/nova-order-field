@@ -1,3 +1,3 @@
 Nova.booting((Vue) => {
-    Vue.inertia('IndexOrderField', require('./components/IndexField'));
+    Vue.inertia('IndexOrderField', require('./components/IndexField').default);
 })
