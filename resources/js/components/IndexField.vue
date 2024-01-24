@@ -54,7 +54,7 @@ export default {
     },
     parentList() {
       return this.$parent.$parent.$parent.$parent.$parent.$parent;
-    }
+    },
   },
   methods: {
     reorderResource(direction) {
@@ -67,17 +67,15 @@ export default {
             resourceId: this.resourceId,
             viaResource: this.field.viaResource || null,
             viaResourceId: this.field.viaResourceId || null,
-            viaRelationship: this.field.viaRelationship || null
+            viaRelationship: this.field.viaRelationship || null,
           }
         )
         .then(() => {
-          this.$toasted.show(this.__("The new order has been set!"), {
-            type: "success"
-          });
+          Nova.success(this.__("The new order has been set!"));
 
           this.parentList.getResources();
         });
-    }
-  }
+    },
+  },
 };
 </script>
