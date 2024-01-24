@@ -3,7 +3,7 @@
     <button
       v-if="!field.last"
       @click="reorderResource('down')"
-      class="cursor-pointer text-70 hover:text-primary mr-3"
+      class="cursor-pointer text-gray-300 hover:text-primary mr-3"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@
     <button
       v-if="!field.first"
       @click="reorderResource('up')"
-      class="cursor-pointer text-70 hover:text-primary"
+      class="cursor-pointer text-gray-300 hover:text-primary"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
