@@ -3,7 +3,7 @@
     <button
       v-if="!field.last"
       @click="reorderResource('down')"
-      class="cursor-pointer text-70 hover:text-primary mr-3"
+      class="cursor-pointer text-gray-400 hover:text-primary mr-3"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@
     <button
       v-if="!field.first"
       @click="reorderResource('up')"
-      class="cursor-pointer text-70 hover:text-primary"
+      class="cursor-pointer text-gray-400 hover:text-primary"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ export default {
     },
     parentList() {
       return this.$parent.$parent.$parent.$parent.$parent.$parent;
-    }
+    },
   },
   methods: {
     reorderResource(direction) {
@@ -67,17 +67,21 @@ export default {
             resourceId: this.resourceId,
             viaResource: this.field.viaResource || null,
             viaResourceId: this.field.viaResourceId || null,
-            viaRelationship: this.field.viaRelationship || null
+            viaRelationship: this.field.viaRelationship || null,
           }
         )
         .then(() => {
-          this.$toasted.show(this.__("The new order has been set!"), {
-            type: "success"
-          });
+          Nova.success(this.__("The new order has been set!"));
 
           this.parentList.getResources();
         });
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style scoped>
+.fill-white {
+  fill: white;
+}
+</style>
