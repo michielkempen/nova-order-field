@@ -79,3 +79,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fill-white {
+  fill: white;
+}
+</style>
